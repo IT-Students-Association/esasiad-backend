@@ -75,7 +75,8 @@ export default class AuthService {
             return null;
         }
         const user = await userModel.findOne({email: this.email});
-        if (!user || !user.active || passwordHash.verify(this.password, user.password)) {
+
+        if (!user || !user.active || !passwordHash.verify(this.password, user.password)) {
             throw ErrorConstructor(1, 'Unauthorized', 401)
         }
 

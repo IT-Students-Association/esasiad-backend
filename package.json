@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "tsc & copyfiles ./package.json ./dist/package.json"
+    "build": "tsc & copyfiles ./package.json ./dist/"
   },
   "repository": {
     "type": "git",

@@ -28,4 +28,4 @@ jobs:
           server: ftp.e-sasiad.pl
           username: backend-ftp@e-sasiad.pl
           password: ${{ secrets.ftpPassword }}
-          local-dir: ./build/
+          local-dir: ./dist/

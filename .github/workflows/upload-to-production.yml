@@ -1,4 +1,4 @@
-name: ITSA-backend-extended-build
+name: e-Sasiad backend deploy
 on:
   push:
     branches: [ "production" ]

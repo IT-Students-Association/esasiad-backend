@@ -4,7 +4,8 @@ import {ValidationError} from "express-validation";
 export enum ErrorCodes {
     userAlreadyExists,
     unauthorized,
-    activationTokenNotValid
+    activationTokenNotValid,
+    invalidCaptchaValidation
 }
 
 export interface IError {

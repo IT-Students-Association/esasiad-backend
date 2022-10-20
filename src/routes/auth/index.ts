@@ -1,8 +1,22 @@
 import Router from 'express';
-import {ErrorCodes, IError} from "../../utils/errorHandler";
+import {ErrorCodes, ErrorConstructor, IError} from "../../utils/errorHandler";
 import AuthService from "./service";
+import fetch from 'cross-fetch';
 import {activateSchema, loginSchema, registerSchema} from "./schema";
 import {validate} from "express-validation";
+
+async function recaptcha(token: string){
+
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST', body: JSON.stringify({
+            secret: process.env.RECAPTCHA_SECRET,
+            response: token
+        })
+    });
+
+    return await response.json() as {success: true|false};
+
+}
 
 const router = Router();
 
@@ -21,6 +35,13 @@ const router = Router();
  *         description: Returns if user already exists
  */
 router.post('/register', validate(registerSchema), async (req, res) => {
+
+    const captcha = await recaptcha(req.body.captchaToken);
+    console.log(captcha);
+    if(!captcha.success){
+        throw ErrorConstructor(3, 'Invalid captcha validation', 401);
+    }
+
     const auth = new AuthService(req.body);
     await auth.register();
     return res.status(200).send({message: 'User registered successfully'});

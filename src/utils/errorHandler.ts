@@ -5,7 +5,9 @@ export enum ErrorCodes {
     userAlreadyExists,
     unauthorized,
     activationTokenNotValid,
-    invalidCaptchaValidation
+    invalidCaptchaValidation,
+    invalidCoordinates,
+    groupAlreadyExists,
 }
 
 export interface IError {
@@ -31,6 +33,8 @@ export default function errorHandler(err: IError | any, req: Request, res: Respo
     if(err.httpErrorCode !== undefined && err.errorCode !== undefined && err.message !== undefined){
         return res.status(err.httpErrorCode).json({code: err.errorCode, message: err.message});
     }
+
+    console.error(err);
 
     return res.status(500).json(err);
 };

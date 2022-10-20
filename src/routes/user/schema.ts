@@ -1,5 +1,8 @@
 import {Request} from "express";
 import mongoose, {model, Schema} from "mongoose";
+import {Joi as JoiStandard} from "express-validation";
+
+const Joi = {...JoiStandard, objectId: require('joi-objectid')(JoiStandard)};
 
 const userSchema = new Schema({
     name: {type: "string", required: true},
@@ -23,4 +26,10 @@ export const userModel = model('User', userSchema);
 
 export interface eSasiadRequest extends Request{
     user?: mongoose.HydratedDocument<IUser>;
+}
+
+export const getUserSchema = {
+    params: Joi.object({
+        userId: Joi.objectId().required()
+    })
 }

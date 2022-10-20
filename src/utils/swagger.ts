@@ -11,7 +11,7 @@ const openApiOptions = {
             version: '1.0.0',
         },
     },
-    apis: ['./src/routes/*.ts', './src/routes/*/*.ts'],
+    apis: ['./src/routes/*.ts', './src/routes/*/*.ts','./src/routes/*/*.js','./src/routes/*.js'],
 };
 
 const router = Router();

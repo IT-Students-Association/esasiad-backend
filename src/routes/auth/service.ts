@@ -4,29 +4,15 @@ import {ErrorCodes, ErrorConstructor} from "../../utils/errorHandler";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import {nanoid} from "nanoid";
-
-const userSchema = new Schema({
-    name: {type: "string", required: true},
-    surname: {type: "string", required: true},
-    email: {type: "string", required: true, unique: true},
-    password: {type: "string", required: true},
-    active: {type: "boolean", required: true, default: false},
-    banned: {type: "boolean", required: true, default: false},
-})
-
-const activateTokenSchema = new Schema({
-    user: {type: "string", required: true},
-    token: {type: "string", required: true, unique: true}
-})
-
-const userModel = model('User', userSchema);
-const activateTokenModel = model('activateToken', activateTokenSchema);
+import {userModel} from "../user/schema";
+import {activateTokenModel} from "./schema";
 
 export default class AuthService {
     name?: string;
     surname?: string;
     email?: string;
     password?: string;
+    captchaToken?: string;
 
     constructor(user?: {
         name: string;
@@ -74,7 +60,7 @@ export default class AuthService {
         if (!this.password || !this.email) {
             return null;
         }
-        const user = await userModel.findOne({email: this.email});
+        const user = await userModel.findOne({email: this.email}).select("+password");
 
         if (!user || !user.active || !passwordHash.verify(this.password, user.password)) {
             throw ErrorConstructor(1, 'Unauthorized', 401)

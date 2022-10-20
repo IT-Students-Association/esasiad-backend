@@ -1,4 +1,5 @@
 import {Joi} from "express-validation";
+import {model, Schema} from "mongoose";
 
 export const registerSchema = {
     body: Joi.object({
@@ -10,6 +11,7 @@ export const registerSchema = {
             .required(),
         name: Joi.string().required(),
         surname: Joi.string().required(),
+        captchaToken: Joi.string().required()
     })
 }
 
@@ -25,3 +27,10 @@ export const activateSchema = {
         token: Joi.string().required(),
     })
 }
+
+const activateTokenSchema = new Schema({
+    user: {type: "string", required: true},
+    token: {type: "string", required: true, unique: true}
+})
+
+export const activateTokenModel = model('activateToken', activateTokenSchema);

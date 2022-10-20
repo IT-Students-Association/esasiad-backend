@@ -1,0 +1,31 @@
+name: ITSA-backend-extended-build
+on:
+  push:
+    branches: [ "production" ]
+
+jobs:
+  deploy-to-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile backend
+        run: CI=false npm run build
+
+      - name: 📂 Upload files
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server-dir: /
+          server: ftp.e-sasiad.pl
+          username: backend-ftp@e-sasiad.pl
+          password: ${{ secrets.ftpPassword }}
+          local-dir: ./build/

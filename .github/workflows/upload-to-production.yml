@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js 16
         uses: actions/setup-node@v3
@@ -21,10 +21,10 @@ jobs:
       - name: Compile backend
         run: CI=false npm run build
 
+
       - name: 📂 Upload files
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.2
         with:
-          server-dir: /
           server: ftp.e-sasiad.pl
           username: backend-ftp@e-sasiad.pl
           password: ${{ secrets.ftpPassword }}

@@ -1,5 +1,5 @@
 import {model, Schema} from "mongoose";
-import {Joi} from "express-validation";
+import Joi from "../../utils/Joi";
 
 const groupSchema = new Schema({
     title: {type: "string", required: true},
@@ -32,5 +32,11 @@ export const getNearestGroups = {
     query: Joi.object({
         lat: Joi.number().required(),
         lng: Joi.number().required()
+    })
+}
+
+export const postJoinGroupSchema = {
+    body: Joi.object({
+        groupId: Joi.objectId().required()
     })
 }

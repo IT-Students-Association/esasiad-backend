@@ -8,6 +8,7 @@ export enum ErrorCodes {
     invalidCaptchaValidation,
     invalidCoordinates,
     groupAlreadyExists,
+    groupNotFound
 }
 
 export interface IError {
@@ -22,6 +23,16 @@ export function ErrorConstructor(errorCode: ErrorCodes, message: string, httpErr
         errorCode: errorCode,
         message: message
     } as IError;
+}
+
+export class eSasiadError{
+    constructor(errorCode: ErrorCodes, message: string, httpErrorCode?: number){
+        return {
+            httpErrorCode: httpErrorCode?httpErrorCode:409,
+            errorCode: errorCode,
+            message: message
+        } as IError;
+    }
 }
 
 

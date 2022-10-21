@@ -1,7 +1,8 @@
 import fetch from "cross-fetch";
-import {ErrorConstructor} from "../../utils/errorHandler";
+import {ErrorConstructor, eSasiadError} from "../../utils/errorHandler";
 import {groupModel, IGroup} from "./schema";
 import {getDistance} from 'geolib';
+import {ObjectId} from "mongodb";
 
 export default class GroupService {
 
@@ -42,7 +43,6 @@ export default class GroupService {
         return nearestGroups;
     }
 
-
     async getInformationsAboutPosition(latitude: number, longitude: number) {
 
         const response = await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${latitude}%2C${longitude}&lang=pl-PL&apiKey=${process.env.HERE_API_KEY}`,
@@ -50,5 +50,14 @@ export default class GroupService {
         if (!response.ok)
             return null;
         return await response.json();
+    }
+
+    async findGroupById(groupId: ObjectId){
+
+        const group = await groupModel.findById(groupId);
+        if(!group){
+            throw new eSasiadError(6, 'group not found');
+        }
+        return group;
     }
 }

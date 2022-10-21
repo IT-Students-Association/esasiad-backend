@@ -39,7 +39,7 @@ const router = Router();
  *              description: successfully registered
  *          400:
  *              description: request is malformed
- *          409:
+ *          401:
  *              description: user already exists
  */
 router.post('/register', validate(registerSchema), async (req, res) => {

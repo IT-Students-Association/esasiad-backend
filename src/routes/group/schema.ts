@@ -2,11 +2,12 @@ import {model, Schema} from "mongoose";
 import {Joi} from "express-validation";
 
 const groupSchema = new Schema({
+    title: {type: "string", required: true},
     centerCoordinates: {
         latitude: {type: "number", required: true},
         longitude: {type: "number", required: true}
     }
-});
+}, { timestamps: true });
 
 export const groupModel = model('Group', groupSchema);
 
@@ -19,6 +20,7 @@ export interface IGroup {
 
 export const postGroupSchema = {
     body: Joi.object({
+        title: Joi.string().required(),
         centerCoordinates: Joi.object({
             latitude: Joi.number().required(),
             longitude: Joi.number().required()

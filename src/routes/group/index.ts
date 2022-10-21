@@ -9,7 +9,7 @@ const router = Router();
 const group = new GroupService();
 
 router.post('/new', authGuard, validate(postGroupSchema), async (req: eSasiadRequest, res) => {
-    await group.create(req.body.centerCoordinates.latitude, req.body.centerCoordinates.longitude)
+    await group.create(req.body.centerCoordinates.latitude, req.body.centerCoordinates.longitude, req.body.title)
     return res.send();
 })
 
@@ -17,4 +17,6 @@ router.get('/nearest', authGuard, validate(getNearestGroups), async (req: eSasia
     const groups = await group.getNearestGroups(Number(req.query.lat), Number(req.query.lng));
     return res.json(groups);
 })
+
+
 export default router;

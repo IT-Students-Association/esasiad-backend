@@ -5,7 +5,7 @@ import {getDistance} from 'geolib';
 
 export default class GroupService {
 
-    async create(latitude: number, longitude: number) {
+    async create(latitude: number, longitude: number, title: string) {
 
         const position = await this.getInformationsAboutPosition(latitude, longitude);
 
@@ -19,14 +19,9 @@ export default class GroupService {
             throw ErrorConstructor(5, 'There is already a group near you');
         }
 
-
-
-        const newGroup = new groupModel({centerCoordinates: {latitude: position.items[0].position.lat, longitude: position.items[0].position.lng}});
+        const newGroup = new groupModel({centerCoordinates: {latitude: position.items[0].position.lat, longitude: position.items[0].position.lng}, title: title});
 
         await newGroup.save();
-
-
-
     }
 
     async getNearestGroups(latitude: number, longitude: number) {

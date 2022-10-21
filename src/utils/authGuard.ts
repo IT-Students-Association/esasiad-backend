@@ -18,12 +18,11 @@ export default async function authGuard(req: eSasiadRequest, res: Response, next
 
     const user = await userModel.findById(userId.id);
 
-    if(!user){
+    if(!user || user.banned){
         throw ErrorConstructor(1, 'Unauthorized', 409);
     }
 
     req.user = user;
-
     next();
 
 }

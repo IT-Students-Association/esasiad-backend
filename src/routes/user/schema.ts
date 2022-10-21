@@ -11,7 +11,8 @@ const userSchema = new Schema({
     password: {type: "string", required: true, select: false},
     active: {type: "boolean", required: true, default: false},
     banned: {type: "boolean", required: true, default: false},
-    usersGroup: {type: mongoose.Types.ObjectId}
+    usersGroup: {type: mongoose.Types.ObjectId},
+    points: {type: Number, required: true, default: 0}
 }, { timestamps: true });
 
 export interface IUser extends Document{
@@ -22,6 +23,7 @@ export interface IUser extends Document{
     banned: boolean,
     password?: string;
     usersGroup?: mongoose.Types.ObjectId;
+    points: number;
 }
 
 export const userModel = model<IUser>('User', userSchema);

@@ -80,7 +80,7 @@ const openApiOptions = {
 
         }
     },
-    apis: ['./src/routes/*.ts', './src/routes/*/*.ts','./src/routes/*/*.js','./src/routes/*.js'],
+    apis: ['./src/routes/*.ts', './src/routes/*/*.ts','./routes/*/*.js','./routes/*.js'],
 };
 
 const router = Router();

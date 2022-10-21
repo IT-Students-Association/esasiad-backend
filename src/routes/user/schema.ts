@@ -1,5 +1,8 @@
 import {Request} from "express";
-import mongoose, {model, Schema} from "mongoose";
+import mongoose, {model, Schema, Document} from "mongoose";
+import {Joi as JoiStandard} from "express-validation";
+
+const Joi = {...JoiStandard, objectId: require('joi-objectid')(JoiStandard)};
 
 const userSchema = new Schema({
     name: {type: "string", required: true},
@@ -8,19 +11,28 @@ const userSchema = new Schema({
     password: {type: "string", required: true, select: false},
     active: {type: "boolean", required: true, default: false},
     banned: {type: "boolean", required: true, default: false},
-});
+    usersGroup: {type: mongoose.Types.ObjectId}
+}, { timestamps: true });
 
-export interface IUser {
+export interface IUser extends Document{
     name: string,
     surname: string,
     email: string,
     active: boolean,
     banned: boolean,
-    password?: string
+    password?: string;
+    usersGroup?: mongoose.Types.ObjectId;
 }
 
-export const userModel = model('User', userSchema);
+export const userModel = model<IUser>('User', userSchema);
+
 
 export interface eSasiadRequest extends Request{
-    user?: mongoose.HydratedDocument<IUser>;
+    user?: IUser
+}
+
+export const getUserSchema = {
+    params: Joi.object({
+        userId: Joi.objectId().required()
+    })
 }

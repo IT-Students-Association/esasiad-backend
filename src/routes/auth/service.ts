@@ -62,7 +62,7 @@ export default class AuthService {
         }
         const user = await userModel.findOne({email: this.email}).select("+password");
 
-        if (!user || !user.active || !passwordHash.verify(this.password, user.password)) {
+        if (!user || !user.active || !passwordHash.verify(this.password, user.password as string) || user.banned) {
             throw ErrorConstructor(1, 'Unauthorized', 401)
         }
 

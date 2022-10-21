@@ -31,6 +31,6 @@ export const activateSchema = {
 const activateTokenSchema = new Schema({
     user: {type: "string", required: true},
     token: {type: "string", required: true, unique: true}
-})
+}, { timestamps: true })
 
 export const activateTokenModel = model('activateToken', activateTokenSchema);

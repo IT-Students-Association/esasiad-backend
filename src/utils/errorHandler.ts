@@ -5,7 +5,10 @@ export enum ErrorCodes {
     userAlreadyExists,
     unauthorized,
     activationTokenNotValid,
-    invalidCaptchaValidation
+    invalidCaptchaValidation,
+    invalidCoordinates,
+    groupAlreadyExists,
+    groupNotFound
 }
 
 export interface IError {
@@ -22,6 +25,16 @@ export function ErrorConstructor(errorCode: ErrorCodes, message: string, httpErr
     } as IError;
 }
 
+export class eSasiadError{
+    constructor(errorCode: ErrorCodes, message: string, httpErrorCode?: number){
+        return {
+            httpErrorCode: httpErrorCode?httpErrorCode:409,
+            errorCode: errorCode,
+            message: message
+        } as IError;
+    }
+}
+
 
 export default function errorHandler(err: IError | any, req: Request, res: Response, next: NextFunction){
     if (err instanceof ValidationError) {
@@ -31,6 +44,8 @@ export default function errorHandler(err: IError | any, req: Request, res: Respo
     if(err.httpErrorCode !== undefined && err.errorCode !== undefined && err.message !== undefined){
         return res.status(err.httpErrorCode).json({code: err.errorCode, message: err.message});
     }
+
+    console.error(err);
 
     return res.status(500).json(err);
 };

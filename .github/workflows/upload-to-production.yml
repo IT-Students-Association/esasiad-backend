@@ -21,6 +21,8 @@ jobs:
       - name: Compile backend
         run: CI=false npm run build
 
+      - name: Check compiled files
+        run: cd dist && ls
 
       - name: 📂 Upload files
         uses: SamKirkland/FTP-Deploy-Action@4.3.2

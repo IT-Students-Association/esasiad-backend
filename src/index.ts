@@ -7,6 +7,7 @@ import swagger from "./utils/swagger";
 import * as mongoose from "mongoose";
 import errorHandler, {ErrorCodes, IError} from "./utils/errorHandler";
 import bodyParser from "body-parser";
+import cors from 'cors';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
 }).catch(err => server.log(err));
 
 app.use(bodyParser.json());
+app.options('*', cors());
 
 app.use('/api-docs', swagger);
 

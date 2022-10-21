@@ -11,7 +11,7 @@ const userSchema = new Schema({
     password: {type: "string", required: true, select: false},
     active: {type: "boolean", required: true, default: false},
     banned: {type: "boolean", required: true, default: false},
-});
+}, { timestamps: true });
 
 export interface IUser {
     name: string,

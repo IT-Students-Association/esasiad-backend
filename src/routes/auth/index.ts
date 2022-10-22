@@ -6,12 +6,12 @@ import {activateSchema, loginSchema, registerSchema} from "./schema";
 import {validate} from "express-validation";
 
 async function recaptcha(token: string){
+    console.log(token);
 
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-        method: 'POST', body: JSON.stringify({
-            secret: process.env.RECAPTCHA_SECRET,
-            response: token
-        })
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `secret=${process.env.RECAPTCHA_SECRET}&response=${token}`,
     });
 
     return await response.json() as {success: true|false};

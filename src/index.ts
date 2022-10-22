@@ -18,7 +18,9 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
 }).catch(err => server.log(err));
 
 app.use(bodyParser.json());
-app.options('*', cors());
+app.use(cors({
+    origin: '*'
+}));
 
 app.use('/api-docs', swagger);
 

@@ -50,6 +50,8 @@ export default class AuthService {
             activateUserToken = nanoid(48);
         }
 
+        await activateTokenModel.findOneAndDelete({user: userInstance._id});
+
         const tokenInstance = new activateTokenModel({token: activateUserToken, user: userInstance._id});
         await tokenInstance.save();
 

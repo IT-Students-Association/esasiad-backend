@@ -7,7 +7,7 @@ export class UserService{
     }
 
     async getMinified(){
-        return userModel.findById(this.userId, 'name surname _id');
+        return userModel.findById(this.userId, 'name surname _id points');
     }
 
 }

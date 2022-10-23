@@ -9,7 +9,9 @@ export enum ErrorCodes {
     invalidCoordinates,
     groupAlreadyExists,
     groupNotFound,
-    notAGroupMember
+    notAGroupMember,
+    postAlreadyLikedOrNotExists,
+    alreadyGroupMember
 }
 
 export interface IError {

@@ -21,3 +21,9 @@ export const postPostSchema = {
         content: Joi.string().required().max(1024)
     })
 }
+
+export const likePostSchema = {
+    body: Joi.object({
+        postId: Joi.objectId().required()
+    })
+}

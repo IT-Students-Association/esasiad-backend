@@ -10,7 +10,8 @@ export enum ErrorCodes {
     groupAlreadyExists,
     groupNotFound,
     notAGroupMember,
-    postAlreadyLikedOrNotExists
+    postAlreadyLikedOrNotExists,
+    alreadyGroupMember
 }
 
 export interface IError {

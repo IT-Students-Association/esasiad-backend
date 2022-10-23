@@ -3,44 +3,46 @@ import {ErrorConstructor, eSasiadError} from "../../utils/errorHandler";
 import {groupModel, IGroup} from "./schema";
 import {getDistance} from 'geolib';
 import {ObjectId} from "mongodb";
+import Post from "../post";
 
 export default class GroupService {
 
-    async create(latitude: number, longitude: number, title: string) {
+    async create(lng: number, lat: number, title: string) {
 
-        const position = await this.getInformationsAboutPosition(latitude, longitude);
+        const position = await this.getInformationsAboutPosition(lat, lng);
 
         if (position.items[0].address.countryCode !== "POL") {
             throw ErrorConstructor(4, 'Latitude and longitude not supported');
         }
 
-        const nearestGroups = await this.getNearestGroups(latitude, longitude);
+        const nearestGroups = await this.getNearestGroups(lng, lat);
 
         if (nearestGroups.length > 0) {
             throw ErrorConstructor(5, 'There is already a group near you');
         }
 
-        const newGroup = new groupModel({centerCoordinates: {latitude: position.items[0].position.lat, longitude: position.items[0].position.lng}, title: title});
+        const newGroup = new groupModel({loc: {coordinates: [position.items[0].position.lng, position.items[0].position.lat], type: 'Point'}, title: title});
 
-        await newGroup.save();
+        return await newGroup.save();
+
     }
 
-    async getNearestGroups(latitude: number, longitude: number) {
-
-        const allGroups = await groupModel.find({}).exec() as IGroup[];
-        const nearestGroups: IGroup[] = [];
-
-        allGroups.forEach(group => {
-            const distance = getDistance(
-                {latitude: latitude, longitude: longitude},
-                {latitude: group.centerCoordinates.latitude, longitude: group.centerCoordinates?.longitude}
-            );
-            if (distance <= 1000) {
-                nearestGroups.push(group);
+    async getNearestGroups(lng: number, lat: number) {
+        console.log([lng, lat]);
+        return groupModel.aggregate([
+            {
+                $geoNear: {
+                    near: {
+                        type: 'Point',
+                        coordinates: [lng, lat]
+                    },
+                    distanceField: "distance",
+                    spherical: true,
+                    maxDistance: 10000
+                }
             }
-        });
+        ]);
 
-        return nearestGroups;
     }
 
     async getInformationsAboutPosition(latitude: number, longitude: number) {
